@@ -6,6 +6,7 @@ import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import Badge from "@material-ui/core/Badge";
 import { AddShoppingCart } from "@material-ui/icons";
 import Item from "./components/Item";
+import Cart from "./components/Cart";
 
 // custom styles
 import { Wrapper, StyledButton } from './App.styles';
@@ -55,9 +56,38 @@ function App() {
   const getTotalItems = (items: CartItemType[]) =>
     items.reduce((previousValue: number, item) => previousValue + item.amount, 0);
 
-  const handleAddToCart = (clickedItem: CartItemType) => null;
+  const handleAddToCart = (clickedItem: CartItemType) => {
+    // ways of set data to state
+    setCartItems(prev => {
+      // does item exist
+      const isExist = prev.find(item => item.id === clickedItem.id);
 
-  const handleRemoveFromCart = () => null;
+      // if it exist
+      if (isExist) {
+        return prev.map(item =>
+          item.id === clickedItem.id 
+            ? { ...item, amount: item.amount + 1}
+            : item
+        );
+      }
+
+      // first time we are adding item to cart
+      return [ ...prev, { ...clickedItem, amount: 1 }];
+    })
+  };
+
+  const handleRemoveFromCart = (id: number) => {
+    setCartItems(prev => (
+      prev.reduce((ackArray, item) => {
+        if (item.id === id) {
+          if (item.amount === 1) return ackArray;
+          return [...ackArray, { ...item, amount: item.amount - 1 }];
+        } else {
+          return [...ackArray, item];
+        }
+      }, [] as CartItemType[])
+    ))
+  };
 
   if (isLoading) return <LinearProgress/>
   if (error) return <div>Some went wrong</div>
@@ -65,7 +95,11 @@ function App() {
   return (
     <Wrapper>
       <Drawer anchor='right' open={cartOpen} onClose={() => setCartOpen(false)}>
-        Cart goes here
+        <Cart 
+          cartCarts={cartItems}
+          addToCart={handleAddToCart}
+          removeFromCart={handleRemoveFromCart}
+        />
       </Drawer>
       <StyledButton onClick={() => setCartOpen(true)}>
         <Badge badgeContent={getTotalItems(cartItems)} color='error'>
