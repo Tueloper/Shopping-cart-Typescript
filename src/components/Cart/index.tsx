@@ -1,9 +1,7 @@
 import React from "react";
-import { Button } from "@material-ui/core";
 import { CartItemType } from "../../App";
 import { Wrapper } from './style';
 import CartItem from './../CartItem';
-import { number } from "prop-types";
 
 // define types
 type Props = {

@@ -1,8 +1,8 @@
 import "./App.css";
 import { useState }from "react";
 import { useQuery } from 'react-query';
-import { Container, Drawer, LinearProgress, Grid, Box, Typography } from "@material-ui/core";
-import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
+import { Drawer, LinearProgress, Grid } from "@material-ui/core";
+// import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 import Badge from "@material-ui/core/Badge";
 import { AddShoppingCart } from "@material-ui/icons";
 import Item from "./components/Item";
@@ -16,13 +16,13 @@ import { Wrapper, StyledButton } from './App.styles';
  *
  * @params theme
  */
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      margin: theme.spacing(2)
-    }
-  })
-);
+// const useStyles = makeStyles((theme: Theme) =>
+//   createStyles({
+//     root: {
+//       margin: theme.spacing(2)
+//     }
+//   })
+// );
 // thos is an interface
 // defining types of the structure to be retured
 export type CartItemType = {
@@ -44,8 +44,6 @@ const getProducts = async (): Promise<CartItemType[]> =>
  * Function to initiate react application.
  */
 function App() {
-  const classes = useStyles();
-
   const [cartOpen, setCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([] as CartItemType[]);
 
